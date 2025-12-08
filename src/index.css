@@ -1,0 +1,215 @@
+/* ─────────────────────────────────────────────────────────────
+ * Design Tokens - Global CSS Custom Properties
+ * Purpose: Central source of truth for colors, typography, spacing, and effects.
+ * Layer: Foundation
+ * Used by: All components via Tailwind theme extension and direct var() references.
+ * ───────────────────────────────────────────────────────────── */
+
+@import "tailwindcss";
+
+:root {
+  /* ─── Color Palette: Dark Theme ─── */
+
+  /* Backgrounds - layered from deepest to elevated */
+  --bg-base: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-surface: #1a1a25;
+  --bg-overlay: #22222f;
+  --bg-hover: #2a2a3a;
+
+  /* Borders */
+  --border-subtle: #2a2a3a;
+  --border-default: #3a3a4a;
+  --border-focus: #4a8fff;
+
+  /* Text */
+  --text-primary: #f0f0f5;
+  --text-secondary: #a0a0b0;
+  --text-muted: #6a6a7a;
+  --text-disabled: #4a4a5a;
+
+  /* Primary Accent: Cyan/Teal - main CTAs */
+  --accent-primary: #22d3ee;
+  --accent-primary-hover: #06b6d4;
+  --accent-primary-muted: rgba(34, 211, 238, 0.15);
+
+  /* Secondary Accent: Purple - secondary actions */
+  --accent-secondary: #a78bfa;
+  --accent-secondary-hover: #8b5cf6;
+  --accent-secondary-muted: rgba(167, 139, 250, 0.15);
+
+  /* Semantic Colors */
+  --color-success: #34d399;
+  --color-success-muted: rgba(52, 211, 153, 0.15);
+  --color-warning: #fbbf24;
+  --color-warning-muted: rgba(251, 191, 36, 0.15);
+  --color-error: #f87171;
+  --color-error-muted: rgba(248, 113, 113, 0.15);
+
+  /* ─── Typography ─── */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* ─── Spacing Scale ─── */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-5: 1.25rem;
+  /* 20px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-10: 2.5rem;
+  /* 40px */
+  --space-12: 3rem;
+  /* 48px */
+
+  /* ─── Border Radius ─── */
+  --radius-sm: 0.25rem;
+  /* 4px - inputs, small elements */
+  --radius-md: 0.5rem;
+  /* 8px - buttons, cards */
+  --radius-lg: 0.75rem;
+  /* 12px - panels, modals */
+  --radius-xl: 1rem;
+  /* 16px - large containers */
+  --radius-full: 9999px;
+  /* pills, avatars */
+
+  /* ─── Shadows ─── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-glow-primary: 0 0 20px rgba(34, 211, 238, 0.2);
+
+  /* ─── Transitions ─── */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* ─── Base Styles ─── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  min-height: 100vh;
+}
+
+/* ─── Focus Styles ─── */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Scrollbar Styling ─── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-elevated);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: var(--accent-primary-muted);
+  color: var(--text-primary);
+}
+
+/* ─── Tailwind Theme Extension ─── */
+@theme {
+  /* Extend Tailwind with our design tokens */
+  --color-bg-base: var(--bg-base);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-overlay: var(--bg-overlay);
+  --color-bg-hover: var(--bg-hover);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-focus: var(--border-focus);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-hover: var(--accent-primary-hover);
+  --color-accent-primary-muted: var(--accent-primary-muted);
+
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-secondary-hover: var(--accent-secondary-hover);
+  --color-accent-secondary-muted: var(--accent-secondary-muted);
+
+  --color-success: var(--color-success);
+  --color-success-muted: var(--color-success-muted);
+  --color-warning: var(--color-warning);
+  --color-warning-muted: var(--color-warning-muted);
+  --color-error: var(--color-error);
+  --color-error-muted: var(--color-error-muted);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+}
