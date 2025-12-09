@@ -33,7 +33,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 // ─── Variant Styles ───
 const variantStyles: Record<ButtonVariant, string> = {
 	primary: `
-    bg-accent-primary text-bg-base
+    bg-accent-primary text-accent-on-primary
     hover:bg-accent-primary-hover
     active:scale-[0.97]
     shadow-sm hover:shadow-md

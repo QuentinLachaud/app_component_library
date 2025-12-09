@@ -3,13 +3,36 @@
  * Purpose: Central source of truth for colors, typography, spacing, and effects.
  * Layer: Foundation
  * Used by: All components via Tailwind theme extension and direct var() references.
+ * 
+ * CUSTOMIZATION:
+ * - Change --accent-highlight to set the primary accent color for all interactive elements
+ * - Toggle data-theme="light" on html/body for light mode
  * ───────────────────────────────────────────────────────────── */
 
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+ * User-Configurable Accent Color
+ * Change this single variable to update all buttons, sliders, and highlights
+ * ───────────────────────────────────────────────────────────── */
 :root {
-  /* ─── Color Palette: Dark Theme ─── */
+  /* The main configurable accent - change this to customize the app */
+  --accent-highlight: 186 100% 54%;
+  /* HSL values: Cyan (h=186, s=100%, l=54%) */
 
+  /* Common accent derivations - computed from highlight */
+  --accent-primary: hsl(var(--accent-highlight));
+  --accent-primary-hover: hsl(var(--accent-highlight) / 0.85);
+  --accent-primary-muted: hsl(var(--accent-highlight) / 0.15);
+  --accent-on-primary: #0a0a0f;
+  /* Text color on accent background */
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Dark Theme (Default)
+ * ───────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
   /* Backgrounds - layered from deepest to elevated */
   --bg-base: #0a0a0f;
   --bg-elevated: #12121a;
@@ -20,7 +43,7 @@
   /* Borders */
   --border-subtle: #2a2a3a;
   --border-default: #3a3a4a;
-  --border-focus: #4a8fff;
+  --border-focus: hsl(var(--accent-highlight));
 
   /* Text */
   --text-primary: #f0f0f5;
@@ -28,10 +51,8 @@
   --text-muted: #6a6a7a;
   --text-disabled: #4a4a5a;
 
-  /* Primary Accent: Cyan/Teal - main CTAs */
-  --accent-primary: #22d3ee;
-  --accent-primary-hover: #06b6d4;
-  --accent-primary-muted: rgba(34, 211, 238, 0.15);
+  /* Text on accent backgrounds */
+  --accent-on-primary: #0a0a0f;
 
   /* Secondary Accent: Purple - secondary actions */
   --accent-secondary: #a78bfa;
@@ -46,7 +67,66 @@
   --color-error: #f87171;
   --color-error-muted: rgba(248, 113, 113, 0.15);
 
-  /* ─── Typography ─── */
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-glow-primary: 0 0 20px hsl(var(--accent-highlight) / 0.2);
+
+  color-scheme: dark;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Light Theme
+ * ───────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Backgrounds - reversed for light mode */
+  --bg-base: #f8f9fc;
+  --bg-elevated: #ffffff;
+  --bg-surface: #f0f1f5;
+  --bg-overlay: #e8e9ed;
+  --bg-hover: #dcdde3;
+
+  /* Borders */
+  --border-subtle: #e0e1e6;
+  --border-default: #c8c9d0;
+  --border-focus: hsl(var(--accent-highlight));
+
+  /* Text */
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a5e;
+  --text-muted: #7a7a8e;
+  --text-disabled: #a0a0ae;
+
+  /* Text on accent backgrounds */
+  --accent-on-primary: #ffffff;
+
+  /* Secondary Accent */
+  --accent-secondary: #7c3aed;
+  --accent-secondary-hover: #6d28d9;
+  --accent-secondary-muted: rgba(124, 58, 237, 0.1);
+
+  /* Semantic Colors - slightly adjusted for light mode */
+  --color-success: #059669;
+  --color-success-muted: rgba(5, 150, 105, 0.1);
+  --color-warning: #d97706;
+  --color-warning-muted: rgba(217, 119, 6, 0.1);
+  --color-error: #dc2626;
+  --color-error-muted: rgba(220, 38, 38, 0.1);
+
+  /* Shadows - lighter for light mode */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-glow-primary: 0 0 20px hsl(var(--accent-highlight) / 0.15);
+
+  color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Typography (shared across themes)
+ * ───────────────────────────────────────────────────────────── */
+:root {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
@@ -110,12 +190,6 @@
   --radius-full: 9999px;
   /* pills, avatars */
 
-  /* ─── Shadows ─── */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-  --shadow-glow-primary: 0 0 20px rgba(34, 211, 238, 0.2);
-
   /* ─── Transitions ─── */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
@@ -142,6 +216,7 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-base);
   min-height: 100vh;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* ─── Focus Styles ─── */
@@ -196,6 +271,7 @@ body {
   --color-accent-primary: var(--accent-primary);
   --color-accent-primary-hover: var(--accent-primary-hover);
   --color-accent-primary-muted: var(--accent-primary-muted);
+  --color-accent-on-primary: var(--accent-on-primary);
 
   --color-accent-secondary: var(--accent-secondary);
   --color-accent-secondary-hover: var(--accent-secondary-hover);

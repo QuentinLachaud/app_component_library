@@ -14,7 +14,11 @@ import {
 	Settings,
 	Download,
 	ArrowRight,
-	RefreshCw
+	RefreshCw,
+	Sun,
+	Moon,
+	Monitor,
+	Palette
 } from 'lucide-react';
 import {
 	Panel,
@@ -28,7 +32,7 @@ import {
 } from '../components/ui';
 import { PageLayout, TopRibbon, BottomRibbon, TwoColumnLayout } from '../components/layout';
 import { DataTable, type ColumnDef } from '../components/data';
-import { useSyncedSliderInput, useResponsiveBreakpoints } from '../hooks';
+import { useSyncedSliderInput, useResponsiveBreakpoints, useTheme, ACCENT_PRESETS, type AccentPreset } from '../hooks';
 
 // ─── Sample Data for Table ───
 interface SampleRow {
@@ -69,8 +73,36 @@ const columns: ColumnDef<SampleRow>[] = [
 	},
 ];
 
+// ─── Accent Color Button ───
+function AccentColorButton({
+	preset,
+	isActive,
+	onClick
+}: {
+	preset: AccentPreset;
+	isActive: boolean;
+	onClick: () => void;
+}) {
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			title={preset.charAt(0).toUpperCase() + preset.slice(1)}
+			className={`
+				w-6 h-6 rounded-full
+				transition-all duration-[var(--transition-fast)]
+				${isActive ? 'ring-2 ring-offset-2 ring-offset-bg-elevated ring-text-primary scale-110' : 'hover:scale-110'}
+			`}
+			style={{ backgroundColor: `hsl(${ACCENT_PRESETS[preset]})` }}
+		/>
+	);
+}
+
 // ─── Component ───
 export function Playground() {
+	// Theme and accent
+	const { mode, setMode, setAccentColor, accentColor, resolvedTheme } = useTheme();
+
 	// State for interactive demos
 	const [viewMode, setViewMode] = useState<'chart' | 'table' | 'summary'>('chart');
 	const [textValue, setTextValue] = useState('');
@@ -94,6 +126,11 @@ export function Playground() {
 		setTimeout(() => setIsLoading(false), 2000);
 	};
 
+	// Get current accent preset name
+	const currentAccentPreset = Object.entries(ACCENT_PRESETS).find(
+		([, value]) => value === accentColor
+	)?.[0] as AccentPreset | undefined;
+
 	return (
 		<PageLayout
 			topRibbon={
@@ -102,7 +139,7 @@ export function Playground() {
 						{
 							content: (
 								<span className="text-sm font-medium text-text-primary">
-									Component Playground
+									React Library Components Playground
 								</span>
 							)
 						},
@@ -133,6 +170,24 @@ export function Playground() {
 									size="sm"
 								/>
 							),
+						},
+						{
+							content: (
+								<div className="flex items-center gap-2">
+									{/* Theme Toggle */}
+									<SegmentedToggle
+										options={[
+											{ value: 'light', label: '', icon: <Sun size={14} /> },
+											{ value: 'dark', label: '', icon: <Moon size={14} /> },
+											{ value: 'system', label: '', icon: <Monitor size={14} /> },
+										]}
+										value={mode}
+										onChange={setMode}
+										size="sm"
+										ariaLabel="Theme mode"
+									/>
+								</div>
+							),
 							grow: true,
 						},
 					]}
@@ -157,6 +212,52 @@ export function Playground() {
 				leftWidth={4}
 				left={
 					<div className="flex flex-col gap-4">
+						{/* Theme & Accent Panel */}
+						<CollapsiblePanel title="Theme & Accent Color" defaultExpanded>
+							<div className="flex flex-col gap-4">
+								{/* Theme Mode */}
+								<div className="flex flex-col gap-2">
+									<span className="text-sm text-text-secondary">Theme Mode</span>
+									<div className="flex items-center gap-3">
+										<SegmentedToggle
+											options={[
+												{ value: 'light', label: 'Light', icon: <Sun size={14} /> },
+												{ value: 'dark', label: 'Dark', icon: <Moon size={14} /> },
+												{ value: 'system', label: 'System', icon: <Monitor size={14} /> },
+											]}
+											value={mode}
+											onChange={setMode}
+											size="md"
+										/>
+										<span className="text-xs text-text-muted">
+											Current: {resolvedTheme}
+										</span>
+									</div>
+								</div>
+
+								{/* Accent Color Picker */}
+								<div className="flex flex-col gap-2">
+									<div className="flex items-center gap-2">
+										<Palette size={14} className="text-text-muted" />
+										<span className="text-sm text-text-secondary">Accent Color</span>
+									</div>
+									<div className="flex flex-wrap gap-2">
+										{(Object.keys(ACCENT_PRESETS) as AccentPreset[]).map((preset) => (
+											<AccentColorButton
+												key={preset}
+												preset={preset}
+												isActive={currentAccentPreset === preset}
+												onClick={() => setAccentColor(ACCENT_PRESETS[preset])}
+											/>
+										))}
+									</div>
+									<p className="text-xs text-text-muted mt-1">
+										Click to change the app's accent color. This updates all buttons, sliders, and highlights.
+									</p>
+								</div>
+							</div>
+						</CollapsiblePanel>
+
 						{/* Buttons Panel */}
 						<CollapsiblePanel title="Buttons" defaultExpanded>
 							<div className="flex flex-col gap-4">
@@ -205,7 +306,7 @@ export function Playground() {
 						</CollapsiblePanel>
 
 						{/* Inputs Panel */}
-						<CollapsiblePanel title="Inputs" defaultExpanded>
+						<CollapsiblePanel title="Inputs" defaultExpanded={false}>
 							<div className="flex flex-col gap-4">
 								<TextInput
 									label="Text Input"
@@ -241,7 +342,7 @@ export function Playground() {
 						</CollapsiblePanel>
 
 						{/* Slider Panel */}
-						<CollapsiblePanel title="Sliders" defaultExpanded>
+						<CollapsiblePanel title="Sliders" defaultExpanded={false}>
 							<div className="flex flex-col gap-6">
 								<Slider
 									label="Save Rate"
