@@ -18,7 +18,10 @@ import {
 	Sun,
 	Moon,
 	Monitor,
-	Palette
+	Palette,
+	Bell,
+	Info,
+	User
 } from 'lucide-react';
 import {
 	Panel,
@@ -29,6 +32,16 @@ import {
 	NumberInput,
 	Slider,
 	SegmentedToggle,
+	Select,
+	Checkbox,
+	RadioGroup,
+	Toggle,
+	Badge,
+	Card,
+	Alert,
+	Tooltip,
+	Tabs,
+	Modal,
 } from '../components/ui';
 import { PageLayout, TopRibbon, BottomRibbon, TwoColumnLayout } from '../components/layout';
 import { DataTable, type ColumnDef } from '../components/data';
@@ -108,6 +121,7 @@ export function Playground() {
 	const [textValue, setTextValue] = useState('');
 	const [numberValue, setNumberValue] = useState<number>(25000);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	// Synced slider + input demo
 	const { sliderProps, numberInputProps } = useSyncedSliderInput({
@@ -368,6 +382,155 @@ export function Playground() {
 								</div>
 							</div>
 						</CollapsiblePanel>
+
+						{/* Form Controls Panel */}
+						<CollapsiblePanel title="Form Controls" defaultExpanded={false}>
+							<div className="flex flex-col gap-6">
+								{/* Select */}
+								<Select
+									label="Country"
+									placeholder="Select a country"
+									options={[
+										{ value: 'uk', label: 'United Kingdom' },
+										{ value: 'us', label: 'United States' },
+										{ value: 'fr', label: 'France' },
+										{ value: 'de', label: 'Germany' },
+									]}
+									helperText="Choose your country"
+								/>
+
+								{/* Checkbox */}
+								<div className="flex flex-col gap-3">
+									<Checkbox label="Subscribe to newsletter" />
+									<Checkbox label="I agree to the terms and conditions" checked />
+									<Checkbox label="Disabled option" disabled />
+								</div>
+
+								{/* Radio Group */}
+								<RadioGroup
+									label="Payment Method"
+									name="payment"
+									options={[
+										{ value: 'card', label: 'Credit Card' },
+										{ value: 'paypal', label: 'PayPal' },
+										{ value: 'bank', label: 'Bank Transfer' },
+									]}
+									helperText="Select your preferred payment method"
+								/>
+
+								{/* Toggle */}
+								<Toggle label="Enable notifications" />
+								<Toggle label="Dark mode" checked />
+							</div>
+						</CollapsiblePanel>
+
+						{/* Badges & Cards Panel */}
+						<CollapsiblePanel title="Badges & Cards" defaultExpanded={false}>
+							<div className="flex flex-col gap-6">
+								{/* Badges */}
+								<div className="flex flex-col gap-3">
+									<div className="flex flex-wrap gap-2">
+										<Badge>Default</Badge>
+										<Badge variant="primary">Primary</Badge>
+										<Badge variant="success">Success</Badge>
+										<Badge variant="warning">Warning</Badge>
+										<Badge variant="error">Error</Badge>
+										<Badge variant="info">Info</Badge>
+									</div>
+									<div className="flex flex-wrap gap-2">
+										<Badge outlined>Default</Badge>
+										<Badge variant="primary" outlined>Primary</Badge>
+										<Badge variant="success" outlined>Success</Badge>
+									</div>
+								</div>
+
+								{/* Cards */}
+								<Card>
+									<h3 className="text-sm font-semibold text-text-primary mb-2">Default Card</h3>
+									<p className="text-sm text-text-secondary">Simple card component for grouping content.</p>
+								</Card>
+
+								<Card variant="elevated" hoverable>
+									<h3 className="text-sm font-semibold text-text-primary mb-2">Elevated Card</h3>
+									<p className="text-sm text-text-secondary">Card with shadow and hover effect.</p>
+								</Card>
+							</div>
+						</CollapsiblePanel>
+
+						{/* Alerts Panel */}
+						<CollapsiblePanel title="Alerts" defaultExpanded={false}>
+							<div className="flex flex-col gap-4">
+								<Alert variant="info" title="Information">
+									This is an informational message for the user.
+								</Alert>
+								<Alert variant="success" title="Success">
+									Your changes have been saved successfully!
+								</Alert>
+								<Alert variant="warning" title="Warning">
+									Please review your input before continuing.
+								</Alert>
+								<Alert variant="error" title="Error" dismissible>
+									An error occurred while processing your request.
+								</Alert>
+							</div>
+						</CollapsiblePanel>
+
+						{/* Tabs Panel */}
+						<CollapsiblePanel title="Tabs" defaultExpanded={false}>
+							<Tabs
+								tabs={[
+									{
+										id: 'overview',
+										label: 'Overview',
+										icon: <Info size={14} />,
+										content: (
+											<div className="text-sm text-text-secondary">
+												<p>Overview content goes here. This demonstrates the tabs component.</p>
+											</div>
+										),
+									},
+									{
+										id: 'notifications',
+										label: 'Notifications',
+										icon: <Bell size={14} />,
+										badge: 3,
+										content: (
+											<div className="text-sm text-text-secondary">
+												<p>You have 3 unread notifications.</p>
+											</div>
+										),
+									},
+									{
+										id: 'profile',
+										label: 'Profile',
+										icon: <User size={14} />,
+										content: (
+											<div className="text-sm text-text-secondary">
+												<p>Profile settings and information.</p>
+											</div>
+										),
+									},
+								]}
+							/>
+						</CollapsiblePanel>
+
+						{/* Tooltips Panel */}
+						<CollapsiblePanel title="Tooltips" defaultExpanded={false}>
+							<div className="flex flex-wrap gap-4 items-center">
+								<Tooltip content="This is a tooltip" position="top">
+									<Button size="sm">Hover me (top)</Button>
+								</Tooltip>
+								<Tooltip content="Tooltip on the right" position="right">
+									<Button size="sm">Hover me (right)</Button>
+								</Tooltip>
+								<Tooltip content="Tooltip at bottom" position="bottom">
+									<Button size="sm">Hover me (bottom)</Button>
+								</Tooltip>
+								<Tooltip content="Tooltip on the left" position="left">
+									<Button size="sm">Hover me (left)</Button>
+								</Tooltip>
+							</div>
+						</CollapsiblePanel>
 					</div>
 				}
 				right={
@@ -459,9 +622,51 @@ export function Playground() {
 								This panel has a footer area for actions or summary info.
 							</p>
 						</Panel>
+
+						{/* Modal Demo */}
+						<Panel title="Modal">
+							<div className="flex flex-col gap-3">
+								<p className="text-sm text-text-secondary">
+									Click the button below to open a modal dialog.
+								</p>
+								<Button onClick={() => setIsModalOpen(true)}>Open Modal</Button>
+							</div>
+						</Panel>
 					</div>
 				}
 			/>
+
+			{/* Modal Component */}
+			<Modal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				title="Example Modal"
+				size="md"
+				footer={
+					<>
+						<Button variant="ghost" onClick={() => setIsModalOpen(false)}>
+							Cancel
+						</Button>
+						<Button variant="primary" onClick={() => setIsModalOpen(false)}>
+							Confirm
+						</Button>
+					</>
+				}
+			>
+				<div className="space-y-4">
+					<p className="text-sm text-text-secondary">
+						This is a modal dialog component. It can be used for confirmations,
+						forms, or detailed views.
+					</p>
+					<TextInput
+						label="Email"
+						placeholder="Enter your email"
+					/>
+					<Alert variant="info">
+						Modal content is fully customizable with any components.
+					</Alert>
+				</div>
+			</Modal>
 		</PageLayout>
 	);
 }
