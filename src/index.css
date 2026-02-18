@@ -41,10 +41,13 @@
   --bg-surface: #1a1a25;
   --bg-overlay: #22222f;
   --bg-hover: #2a2a3a;
+  --bg-muted: #1a1a25;
+  --bg-tooltip: #2a2a3a;
 
   /* Borders */
   --border-subtle: #2a2a3a;
   --border-default: #3a3a4a;
+  --border-hover: #4a4a5a;
   --border-focus: hsl(var(--accent-highlight));
 
   /* Text */
@@ -88,10 +91,13 @@
   --bg-surface: #f0f1f5;
   --bg-overlay: #e8e9ed;
   --bg-hover: #dcdde3;
+  --bg-muted: #e8e9ed;
+  --bg-tooltip: #1a1a2e;
 
   /* Borders */
   --border-subtle: #e0e1e6;
   --border-default: #c8c9d0;
+  --border-hover: #b0b1b8;
   --border-focus: hsl(var(--accent-highlight));
 
   /* Text */
@@ -260,9 +266,12 @@ body {
   --color-bg-surface: var(--bg-surface);
   --color-bg-overlay: var(--bg-overlay);
   --color-bg-hover: var(--bg-hover);
+  --color-bg-muted: var(--bg-muted);
+  --color-bg-tooltip: var(--bg-tooltip);
 
   --color-border-subtle: var(--border-subtle);
   --color-border-default: var(--border-default);
+  --color-border-hover: var(--border-hover);
   --color-border-focus: var(--border-focus);
 
   --color-text-primary: var(--text-primary);
