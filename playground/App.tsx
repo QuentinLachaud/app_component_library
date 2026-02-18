@@ -1,15 +1,12 @@
-import './index.css'
-import { Playground } from './pages/Playground'
-
 // ─────────────────────────────────────────────────────────────
-// App Entry Point
-// Purpose: Root application component.
-// For development: renders the Playground component showcase.
-// For production: replace with your actual app routes/structure.
+// Playground App
+// Imports the Playground page which showcases all library components.
+// The playground/vite.config.ts aliases the package name to src/index.ts
+// so this validates the same public API that consumers will use.
 // ─────────────────────────────────────────────────────────────
 
-function App() {
+import { Playground } from '../src/pages/Playground'
+
+export function App() {
   return <Playground />
 }
-
-export default App
