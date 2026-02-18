@@ -53,11 +53,13 @@ export function useTheme({
 	});
 
 	// Resolve system preference
-	const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('dark');
+	const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(() => {
+		if (typeof window === 'undefined') return 'dark';
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	});
 
 	useEffect(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
 
 		const handler = (e: MediaQueryListEvent) => {
 			setSystemTheme(e.matches ? 'dark' : 'light');

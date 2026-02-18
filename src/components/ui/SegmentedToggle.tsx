@@ -96,7 +96,7 @@ export function SegmentedToggle<T extends string = string>({
 		// Small delay to ensure DOM is ready, then enable animations
 		const timer = setTimeout(() => setIsInitialized(true), 50);
 		return () => clearTimeout(timer);
-	}, []);
+	}, [updatePillPosition]);
 
 	// Update position when value changes (with animation)
 	useEffect(() => {
